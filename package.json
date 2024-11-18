@@ -1,0 +1,16 @@
+{
+  "name": "apiintro",
+  "version": "1.0.0",
+  "description": "Lorrany Fábia Sillva Santos Lindha Emanuelly Almeida Santiago",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
