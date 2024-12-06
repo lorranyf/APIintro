@@ -1,0 +1,30 @@
+name: Testes da API
+tests:
+  - name: Teste de listagem de usuários
+    request:
+      method: GET
+      url: http://localhost:3000/usuario
+    response:
+      status: 200
+
+  - name: Teste de criação de usuário
+    request:
+      method: POST
+      url: http://localhost:3000/usuario
+      headers:
+        Content-Type: application/json
+      body: |
+        {
+          "nome": "João",
+          "senha": "123456",
+          "email": "joao@email.com"
+        }
+    response:
+      status: 201
+
+  - name: Teste de exclusão de usuário
+    request:
+      method: DELETE
+      url: http://localhost:3000/usuario/1
+    response:
+      status: 200

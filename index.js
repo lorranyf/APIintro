@@ -13,16 +13,50 @@ app.get("/", (req, res) => {        // Cria a rota da raiz do projeto
   });
 });
 
-app.get("/usuarios", async (req, res) => {
-  console.log("Rota GET/usuarios solicitada");
+import express from 'express';
+import { selectUsuario, insertUsuario, deleteUsuario, updateUsuario } from './bd.js';
+
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+app.get('/usuario/:id', async (req, res) => {
   try {
-    const usuarios = await selectUsuarios();
-    res.json(usuarios);
+    const usuario = await selectUsuario(req.params.id);
+    if (usuario.length > 0) res.json(usuario);
+    else res.status(404).json({ message: 'Usuário não encontrado!' });
   } catch (error) {
-    res.status(error.status || 500).json({ message: error.message || "Erro!" });
+    res.status(500).json({ message: error.message });
+  }
+});
+app.post('/usuario', async (req, res) => {
+  try {
+    await insertUsuario(req.body);
+    res.status(201).json({ message: 'Usuário inserido com sucesso!' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+app.delete('/usuario/:id', async (req, res) => {
+  try {
+    const usuario = await selectUsuario(req.params.id);
+    if (usuario.length > 0) {
+      await deleteUsuario(req.params.id);
+      res.status(200).json({ message: 'Usuário excluído com sucesso!' });
+    } else res.status(404).json({ message: 'Usuário não encontrado!' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+app.put('/usuario/:id', async (req, res) => {
+  try {
+    const usuario = await selectUsuario(req.params.id);
+    if (usuario.length > 0) {
+      await updateUsuario(req.params.id, req.body);
+      res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
+    } else res.status(404).json({ message: 'Usuário não encontrado!' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-app.listen(port, () => {            // Um socket para "escutar" as requisições
-  console.log(`Serviço escutando na porta:  ${port}`);
-});

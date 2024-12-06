@@ -1,0 +1,34 @@
+name: Testes API com KeyRunner
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checar código
+      uses: actions/checkout@v3
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+
+    - name: Instalar dependências
+      run: npm install
+
+    - name: Iniciar o servidor
+      run: node index.js &
+
+    - name: Instalar KeyRunner
+      run: npm install -g @keyrunner/cli
+
+    - name: Executar testes com KeyRunner
+      run: keyrunner run keyrunner.yaml
